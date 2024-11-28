@@ -83,3 +83,33 @@
 	margin-top: 20px;
 	color: rgba(255, 255, 255, 0.5);
 }
+
+.container {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	height: 100vh;
+	text-align: center;
+	padding: 0 20px;
+}
+
+.largeText {
+	font-size: 3rem;
+	margin-bottom: 30px;
+	color: #333;
+}
+
+.buttonContainer {
+	display: flex;
+	gap: 15px;
+	flex-wrap: wrap;
+	justify-content: center;
+	margin-top: 30px;
+	max-width: 600px;
+	min-width: 200px;
+}
+
+.button {
+	margin: 0;
+}
