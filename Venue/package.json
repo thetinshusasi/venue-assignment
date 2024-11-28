@@ -8,7 +8,7 @@
 		"type": "git",
 		"url": "https://github.com/DarkGuy10/NextJS-Electron-Boilerplate.git"
 	},
-	"author": "DarkGuy10 <HarperBurn@protonmail.ch>",
+	"author": "Tinshu Sasi",
 	"license": "MIT",
 	"scripts": {
 		"frontend:dev": "next dev frontend",
@@ -28,13 +28,22 @@
 	},
 	"packageManager": "yarn@4.2.2",
 	"dependencies": {
+		"@emotion/cache": "^11.13.5",
+		"@emotion/react": "^11.13.5",
+		"@emotion/server": "^11.11.0",
+		"@emotion/styled": "^11.13.5",
+		"@mui/icons-material": "^6.1.9",
+		"@mui/material": "^6.1.9",
+		"@mui/material-nextjs": "^6.1.9",
+		"axios": "^1.7.8",
 		"electron-is-dev": "^3.0.1",
 		"electron-log": "^5.1.4",
 		"electron-store": "^9.0.0",
 		"electron-updater": "6.1.8",
-		"next": "^14.2.3",
+		"next": "^15.0.3",
 		"react": "^18.3.1",
-		"react-dom": "^18.3.1"
+		"react-dom": "^18.3.1",
+		"simple-git": "^3.27.0"
 	},
 	"devDependencies": {
 		"@chromatic-com/storybook": "1",
