@@ -2,28 +2,29 @@ import styles from './page.module.css'
 import EditSVG from '@/assets/edit.svg'
 import Menhera from '@/assets/menhera.png'
 import { Typography } from '@mui/material'
-import Image from 'next/image'
-
-export default function Home() {
+import Link from 'next/link'
+import Button from '@mui/material/Button'
+import { AuthSessionProvider } from './providers/AuthSessionProvider'
+export default function LandingPage() {
 	return (
 		<div className={styles.wrapper}>
 			<main className={styles.main}>
-				<div className={styles.container}>
-					<Typography variant="h2" component="h1" className={styles.largeText}>
-						Welcome to Our Venue App
-					</Typography>
-					<div className={styles.buttonContainer}>
-						{/* <Button
-							variant="contained"
-							color="primary"
-							size="large"
-							className={styles.button}
-							onClick={handleLoginClick}
+				<AuthSessionProvider>
+					<div className={styles.container}>
+						<Typography
+							variant="h2"
+							component="h1"
+							className={styles.largeText}
 						>
-							Login
-						</Button> */}
+							Welcome to Our Venue App
+						</Typography>
+						<Link href="/pages/home">
+							<Button variant="contained" color="primary">
+								Go to Login Page
+							</Button>
+						</Link>
 					</div>
-				</div>
+				</AuthSessionProvider>
 			</main>
 		</div>
 	)

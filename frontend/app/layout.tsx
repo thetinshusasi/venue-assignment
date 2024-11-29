@@ -7,6 +7,8 @@ import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter'
 import { Roboto } from 'next/font/google'
 import { ThemeProvider } from '@mui/material/styles'
 import theme from './theme'
+import { Button, Link } from '@mui/material'
+import { AuthSessionProvider } from './providers/AuthSessionProvider'
 
 export const metadata = {
 	title: 'NextJS  Electron Boilerplate',
@@ -26,9 +28,16 @@ export default function RootLayout(props) {
 	return (
 		<html lang="en">
 			<body className={roboto.variable}>
-				<AppRouterCacheProvider>
-					<ThemeProvider theme={theme}>{children}</ThemeProvider>
-				</AppRouterCacheProvider>
+				<Link href="/">
+					<Button variant="contained" color="primary">
+						Go to Home
+					</Button>
+				</Link>
+				<AuthSessionProvider>
+					<AppRouterCacheProvider>
+						<ThemeProvider theme={theme}>{children}</ThemeProvider>
+					</AppRouterCacheProvider>
+				</AuthSessionProvider>
 			</body>
 		</html>
 	)
