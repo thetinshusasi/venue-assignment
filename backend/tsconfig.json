@@ -12,8 +12,18 @@
 		"strict": true,
 		"skipLibCheck": true,
 		"noFallthroughCasesInSwitch": true,
-		"outDir": "build"
+		"outDir": "build",
+		"allowSyntheticDefaultImports": true
 	},
-	"include": ["**/*.ts"],
-	"exclude": ["node_modules"]
+	"tsc-alias": {
+		"resolveFullPaths": true,
+		"resolveFullExtension": ".js",
+		"verbose": true,
+		"fileExtensions": {
+			"inputGlob": "{js,jsx,mjs}",
+			"outputCheck": ["js", "json", "jsx", "mjs"]
+		}
+	},
+	"include": ["**/*.ts", "./src/**/*"],
+	"exclude": ["node_modules", "build"]
 }

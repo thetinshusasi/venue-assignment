@@ -4,17 +4,13 @@
 	"main": "backend/build/src/main.js",
 	"private": true,
 	"type": "module",
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/DarkGuy10/NextJS-Electron-Boilerplate.git"
-	},
 	"author": "DarkGuy10 <HarperBurn@protonmail.ch>",
 	"license": "MIT",
 	"scripts": {
 		"frontend:dev": "next dev frontend",
 		"frontend:build": "next build frontend",
 		"frontend:lint": "next lint frontend",
-		"backend:build": "tsc -p backend && tsc-alias -p ./backend/tsconfig.json",
+		"backend:build": "tsc -p backend && tsc-alias -p ./backend/tsconfig.json ",
 		"backend:lint": "eslint backend",
 		"lint": "prettier -c . && yarn backend:lint && yarn frontend:lint",
 		"lint:fix": "prettier -w .",
@@ -42,6 +38,7 @@
 		"electron-store": "^9.0.0",
 		"electron-updater": "6.1.8",
 		"next": "^14.2.3",
+		"next-auth": "^4.24.10",
 		"react": "^18.3.1",
 		"react-dom": "^18.3.1"
 	},

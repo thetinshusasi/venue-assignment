@@ -7,157 +7,11 @@ import { fileURLToPath } from 'url'
 import { dirname } from 'path'
 import 'dotenv/config'
 
-import { exec } from 'child_process'
-import axios from 'axios'
 import * as fs from 'fs'
 import * as path from 'path'
 import * as os from 'os'
-
-/* Todo: Writing backend code here due to tsconfig issue : Unable to import esm modules
- * ======================================================================================
- *                                User Code
- * ======================================================================================
- *
- */
-
-const isGitInstalled = async (): Promise<boolean> => {
-	return new Promise(resolve => {
-		exec('git --version', error => {
-			resolve(!error) // If no error, Git is installed
-		})
-	})
-}
-
-const downloadFile = async (url: string, outputPath: string): Promise<void> => {
-	const writer = fs.createWriteStream(outputPath)
-	const response = await axios({
-		url,
-		method: 'GET',
-		responseType: 'stream',
-	})
-
-	response.data.pipe(writer)
-
-	return new Promise((resolve, reject) => {
-		writer.on('finish', resolve)
-		writer.on('error', reject)
-	})
-}
-
-const windowsInstaller = async (): Promise<void> => {
-	// Windows
-	const winLocation = process.env.WIN_INSTALLER_LOCATION || ''
-
-	if (!winLocation) {
-		dialog.showErrorBox(
-			'Error',
-			`Git installation failed: Windows location not set in env file`
-		)
-		return
-	}
-
-	const winInstallerUrl = process.env.WIN_DOWNLOAD_URL || ''
-
-	if (!winInstallerUrl) {
-		dialog.showErrorBox(
-			'Error',
-			`Git installation failed: Windows URL not set in env file`
-		)
-		return
-	}
-
-	const DOWNLOAD_DIR = path.join(os.tmpdir(), winLocation)
-
-	const installerPath = path.join(DOWNLOAD_DIR, 'GitInstaller.exe')
-	await downloadFile(winInstallerUrl, installerPath)
-
-	// Run the installer silently
-	exec(`start "" /wait "${installerPath}" /SILENT`, error => {
-		if (error) {
-			dialog.showErrorBox('Error', `Git installation failed: ${error.message}`)
-		} else {
-			dialog.showMessageBox({ message: 'Git installed successfully!' })
-		}
-	})
-	return
-}
-
-const macInstaller = async (): Promise<void> => {
-	exec('xcode-select --install', error => {
-		if (error) {
-			dialog.showErrorBox('Error', `Git installation failed: ${error.message}`)
-		} else {
-			dialog.showMessageBox({
-				message: 'Git installed successfully via Xcode Command Line Tools!',
-			})
-		}
-	})
-	return
-}
-
-const linuxInstaller = async (): Promise<void> => {
-	exec('sudo apt-get update && sudo apt-get install git -y', error => {
-		if (error) {
-			dialog.showErrorBox('Error', `Git installation failed: ${error.message}`)
-		} else {
-			dialog.showMessageBox({ message: 'Git installed successfully!' })
-		}
-	})
-	return
-}
-
-const installGit = async (): Promise<void> => {
-	const platform = os.platform()
-
-	try {
-		if (platform === 'win32') {
-			return windowsInstaller()
-		}
-		if (platform === 'darwin') {
-			// macOS
-
-			return macInstaller()
-		}
-		if (platform === 'linux') {
-			// Linux
-
-			return linuxInstaller()
-		}
-		dialog.showErrorBox(
-			'Unsupported Platform',
-			`Git installation is not supported on ${platform}.`
-		)
-
-		return
-	} catch (error) {
-		dialog.showErrorBox(
-			'Error',
-			`Failed to install Git: ${(error as Error).message}`
-		)
-	}
-}
-
-const checkAndInstallGit = async (): Promise<void> => {
-	const gitInstalled = await isGitInstalled()
-	if (gitInstalled) {
-		// dialog.showMessageBox({
-		// 	message: 'Prerequisite: Git is already installed!',
-		// })
-
-		console.log('Prerequisite: Git is already installed!')
-		return
-	}
-	dialog.showMessageBox({
-		message: 'Git is not installed. Proceeding with installation...',
-	})
-	await installGit()
-}
-
-/*
- * ======================================================================================
- *                                    User Code
- * ======================================================================================
- */
+import { checkAndInstallGit } from './installers/git'
+import { IPlatformEnum } from './models/enums/IPlatformEnum'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
@@ -234,7 +88,7 @@ const spawnAppWindow = async () => {
 app.on('ready', async () => {
 	const platform = os.platform()
 
-	if (platform === 'win32') {
+	if (platform === IPlatformEnum.WINDOWS) {
 		const winLocation = process.env.WIN_INSTALLER_LOCATION || ''
 		if (!winLocation) {
 			dialog.showErrorBox(
