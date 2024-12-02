@@ -1,0 +1,14 @@
+.header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	position: fixed;
+	top: 0;
+	width: 100vw;
+	height: var(--Header-height);
+	z-index: 9995;
+	padding: 16px;
+	gap: 8px;
+	border-bottom: 1px solid var(--mui-palette-background-level1);
+	box-shadow: var(--mui-shadows-1);
+}

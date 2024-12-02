@@ -1,0 +1,23 @@
+html,
+body {
+	padding: 0;
+	margin: 0;
+}
+
+a {
+	text-decoration: none;
+	color: inherit;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+:root {
+	--Header-height: 52px;
+}
+
+@media (min-width: 960px) {
+	:root {
+		--Header-height: 0px;
+	}
+}
