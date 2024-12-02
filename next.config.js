@@ -1,9 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
 	trailingSlash: true,
-	experimental: {
-		appDir: true,
-	},
 	distDir: 'build',
 	assetPrefix: process.env.NODE_ENV === 'production' ? '.' : undefined,
 	images: {
