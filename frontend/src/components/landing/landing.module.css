@@ -1,0 +1,32 @@
+.title {
+	color: var(--joy-palette-primary-main);
+	font-size: var(--joy-fontSize-lg);
+	font-weight: var(--joy-fontWeight-lg);
+}
+
+.headline {
+	font-weight: var(--joy-fontWeight-xl);
+	font-size: clamp(1.875rem, 1.3636rem + 2.1818vw, 3rem);
+}
+
+.secondaryText {
+	color: var(--joy-palette-text-secondary);
+	font-size: var(--joy-fontSize-lg);
+	line-height: var(--joy-lineHeight-lg);
+}
+
+.button {
+	font-size: var(--joy-fontSize-lg);
+}
+
+.link {
+	font-weight: var(--joy-fontWeight-lg);
+}
+
+.bodyXs {
+	position: absolute;
+	top: 2rem;
+	left: 50%;
+	transform: translateX(-50%);
+	font-size: var(--joy-fontSize-xs);
+}
