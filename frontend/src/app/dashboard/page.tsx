@@ -3,7 +3,7 @@ import styles from './page.module.css'
 import LogOutButton from '../../components/logout/logout'
 import { redirect } from 'next/navigation'
 import { getServerSession } from 'next-auth'
-import Header from '../../components/header/header'
+import Sidebar from '../../components/sidebar/sidebar'
 
 interface Props {}
 
@@ -17,7 +17,7 @@ const Page: NextPage<Props> = async ({}) => {
 
 	return (
 		<div className={styles.container}>
-			<Header />
+			<Sidebar />
 			<LogOutButton />
 		</div>
 	)

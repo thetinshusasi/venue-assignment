@@ -2,7 +2,7 @@ import { extendTheme } from '@mui/joy/styles'
 import { inputClasses } from '@mui/joy/Input'
 import { Theme } from '@mui/joy/styles'
 
-const theme: Theme = extendTheme({
+const theme: any = extendTheme({
 	colorSchemes: {
 		light: {
 			palette: {

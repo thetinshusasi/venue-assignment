@@ -1,0 +1,52 @@
+.sidebar {
+	position: sticky;
+	top: 0;
+	width: var(--Sidebar-width);
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+	padding: 16px;
+	height: 100vh;
+	border-right: 1px solid var(--joy-palette-divider);
+	background-color: var(--joy-palette-background-body);
+}
+
+.overlay {
+	position: fixed;
+	z-index: 9998;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	opacity: var(--SideNavigation-slideIn, 0);
+	background-color: var(--joy-palette-background-backdrop);
+	transition: opacity 0.4s;
+}
+
+.header {
+	display: flex;
+	gap: 8px;
+	align-items: center;
+}
+
+.navigation {
+	min-height: 0;
+	overflow: auto;
+	flex-grow: 1;
+}
+
+.list {
+	gap: 8px;
+	--List-nestedInsetStart: 30px;
+}
+
+.footer {
+	display: flex;
+	gap: 8px;
+	align-items: center;
+}
+
+.userDetails {
+	min-width: 0;
+	flex: 1;
+}

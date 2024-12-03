@@ -2,6 +2,9 @@ html,
 body {
 	padding: 0;
 	margin: 0;
+	font-family: Arial, sans-serif;
+	background-color: var(--joy-palette-background-body);
+	color: #333;
 }
 
 a {
@@ -14,10 +17,17 @@ a:hover {
 }
 :root {
 	--Header-height: 52px;
+	--Sidebar-width: 220px;
+	--joy-palette-divider: #e0e0e0;
+	--joy-palette-background-body: #ffffff;
+	--joy-palette-background-backdrop: rgba(0, 0, 0, 0.5);
+	--joy-palette-background-level1: #e0e0e0;
+	--joy-shadow-sm: 0px 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 @media (min-width: 960px) {
 	:root {
 		--Header-height: 0px;
+		--Sidebar-width: 240px;
 	}
 }

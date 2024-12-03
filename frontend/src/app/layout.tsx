@@ -1,4 +1,3 @@
-import './globals.css'
 import '@fontsource/roboto/300.css'
 import '@fontsource/roboto/400.css'
 import '@fontsource/roboto/500.css'
@@ -10,6 +9,7 @@ import { AuthSessionProvider } from '../providers/auth-session-provider'
 import { getServerSession } from 'next-auth'
 import '@fontsource/inter'
 import ThemeRegistry from '../theme/theme-registry'
+import './globals.css'
 
 export const metadata = {
 	title: 'NextJS  Electron Boilerplate',
@@ -30,12 +30,6 @@ export default async function RootLayout({ children }) {
 		<html lang="en">
 			<body>
 				<AuthSessionProvider session={session}>
-					{/* <Link href="/">
-						<Button variant="contained" color="primary">
-							Go to Home
-						</Button>
-					</Link> */}
-
 					<AppRouterCacheProvider>
 						<ThemeRegistry options={{ key: 'joy' }}>{children} </ThemeRegistry>
 					</AppRouterCacheProvider>
