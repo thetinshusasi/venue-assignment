@@ -4,6 +4,7 @@ import LogOutButton from '../../components/logout/logout'
 import { redirect } from 'next/navigation'
 import { getServerSession } from 'next-auth'
 import Sidebar from '../../components/sidebar/sidebar'
+import CloneRepoForm from '../../components/clone-repo-form/clone-repo-form'
 
 interface Props {}
 
@@ -15,12 +16,7 @@ const Page: NextPage<Props> = async ({}) => {
 		return
 	}
 
-	return (
-		<div className={styles.container}>
-			<Sidebar />
-			<LogOutButton />
-		</div>
-	)
+	return <CloneRepoForm />
 }
 
 export default Page

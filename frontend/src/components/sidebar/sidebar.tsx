@@ -32,7 +32,7 @@ const Sidebar = () => {
 						<ListItemButton>
 							<HomeRoundedIcon />
 							<ListItemContent>
-								<Typography level="title-sm">Home</Typography>
+								<Typography level="title-sm">Dashboard</Typography>
 							</ListItemContent>
 						</ListItemButton>
 					</ListItem>
@@ -41,7 +41,7 @@ const Sidebar = () => {
 						<ListItemButton>
 							<DashboardRoundedIcon />
 							<ListItemContent>
-								<Typography level="title-sm">Dashboard</Typography>
+								<Typography level="title-sm">Repositories</Typography>
 							</ListItemContent>
 						</ListItemButton>
 					</ListItem>

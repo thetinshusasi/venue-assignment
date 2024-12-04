@@ -1,3 +1,10 @@
 .container {
-	color: blue;
+	display: flex;
+}
+
+.boxContainer {
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }

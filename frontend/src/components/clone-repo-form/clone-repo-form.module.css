@@ -1,0 +1,27 @@
+.container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding: 20px;
+	margin: 0px;
+	gap: 16px;
+	margin: 0 auto;
+	background-color: red;
+	width: 80%;
+	/* max-width: 800px; */
+}
+.inputContainer {
+	display: flex;
+	justify-content: space-between;
+	flex-direction: row;
+	width: 100%;
+}
+.inputElem {
+	width: 80%;
+}
+
+.error {
+	color: red;
+	font-size: 14px;
+	margin-top: -10px;
+}
