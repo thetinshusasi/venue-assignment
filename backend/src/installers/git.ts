@@ -5,6 +5,7 @@ import { promises as fs } from 'fs'
 import { exec } from 'child_process'
 import { downloadFile, isGitInstalled } from '../common/utils'
 import { IPlatformEnum } from '../models/enums/IPlatformEnum'
+import { LOCAL_GIT_REPO_PATH } from '../common/constants'
 
 const windowsInstaller = async (): Promise<void> => {
 	// Windows
@@ -102,16 +103,15 @@ export const installGit = async (): Promise<void> => {
 
 export const ensureAppDataFolderExists = async (): Promise<void> => {
 	// Define the target folder path
-	const appDataPath = path.join(os.homedir(), 'AppData', 'GitRepos')
 
 	try {
 		// Check if the folder exists
-		await fs.access(appDataPath)
-		console.log('Folder already exists:', appDataPath)
+		await fs.access(LOCAL_GIT_REPO_PATH)
+		console.log('Folder already exists:', LOCAL_GIT_REPO_PATH)
 	} catch {
 		// Folder does not exist, so create it
-		await fs.mkdir(appDataPath, { recursive: true })
-		console.log('Folder created:', appDataPath)
+		await fs.mkdir(LOCAL_GIT_REPO_PATH, { recursive: true })
+		console.log('Folder created:', LOCAL_GIT_REPO_PATH)
 	}
 }
 

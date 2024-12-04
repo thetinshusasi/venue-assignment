@@ -1,0 +1,1 @@
+export const GIT_CLONE_EVENT = 'GIT_CLONE_EVENT'

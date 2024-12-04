@@ -28,3 +28,17 @@ export const downloadFile = async (
 		writer.on('error', reject)
 	})
 }
+
+export const getRepoName = (gitHubUrl: string): string => {
+	// Remove `.git` if present at the end of the URL
+	const cleanUrl = gitHubUrl.replace(/\.git$/, '')
+	// Extract the last segment after the last '/'
+	const repoName = cleanUrl.split('/').pop()
+
+	// Ensure the result is not undefined
+	if (!repoName) {
+		throw new Error('Invalid GitHub URL')
+	}
+
+	return repoName
+}

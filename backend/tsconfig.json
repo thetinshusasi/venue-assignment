@@ -13,7 +13,8 @@
 		"skipLibCheck": true,
 		"noFallthroughCasesInSwitch": true,
 		"outDir": "build",
-		"allowSyntheticDefaultImports": true
+		"allowSyntheticDefaultImports": true,
+		"typeRoots": ["node_modules/@types", "./src/global.d.ts"]
 	},
 	"tsc-alias": {
 		"resolveFullPaths": true,

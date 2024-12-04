@@ -12,6 +12,7 @@
 		"frontend:lint": "next lint frontend",
 		"backend:build": "tsc -p backend && tsc-alias -p ./backend/tsconfig.json ",
 		"backend:lint": "eslint backend",
+		"backend:debug": "yarn backend:build && electron --inspect=9229 .",
 		"lint": "prettier -c . && yarn backend:lint && yarn frontend:lint",
 		"lint:fix": "prettier -w .",
 		"boot": "yarn backend:build && electron .",
@@ -37,12 +38,14 @@
 		"dotenv": "^16.4.5",
 		"electron-is-dev": "^3.0.1",
 		"electron-log": "^5.1.4",
-		"electron-store": "^9.0.0",
+		"electron-store": "10.0.0",
 		"electron-updater": "6.1.8",
+		"isomorphic-git": "^1.27.2",
 		"next": "^14.2.3",
 		"next-auth": "^4.24.10",
 		"react": "^18.3.1",
-		"react-dom": "^18.3.1"
+		"react-dom": "^18.3.1",
+		"simple-git": "^3.27.0"
 	},
 	"devDependencies": {
 		"@chromatic-com/storybook": "1",

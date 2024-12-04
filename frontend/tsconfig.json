@@ -22,11 +22,14 @@
 		"baseUrl": "src/app",
 		"paths": {
 			"@/*": ["./*"]
-		}
+		},
+		"typeRoots": ["./node_modules/@types", "./src/global.d.ts"]
 	},
+
 	"include": [
 		"context.d.ts",
 		"next-env.d.ts",
+
 		"**/*.ts",
 		"**/*.tsx",
 		".next/types/**/*.ts",

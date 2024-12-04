@@ -10,13 +10,18 @@ interface Props {}
 
 const Page: NextPage<Props> = async ({}) => {
 	const session = await getServerSession()
-
+	console.log(session)
 	if (!session) {
 		redirect('/login')
 		return
 	}
 
-	return <CloneRepoForm />
+	return (
+		<>
+			<CloneRepoForm />
+			<LogOutButton />
+		</>
+	)
 }
 
 export default Page
