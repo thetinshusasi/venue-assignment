@@ -1,10 +1,11 @@
 'use client'
 
 import { GitHub } from '@mui/icons-material'
-import { Button } from '@mui/joy'
-import { signIn, signOut, useSession } from 'next-auth/react'
+import Button from '@mui/material/Button'
+import { signOut, useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
+import styles from './logout-button.module.css'
 
 export default function LogOutButton() {
 	const { data: session } = useSession()
@@ -19,10 +20,11 @@ export default function LogOutButton() {
 	return (
 		<Button
 			onClick={() => signOut()}
-			variant="soft"
-			color="neutral"
+			variant="contained"
+			color="primary"
 			fullWidth
-			startDecorator={<GitHub />}
+			startIcon={<GitHub />}
+			className={styles.button}
 		>
 			Logout
 		</Button>

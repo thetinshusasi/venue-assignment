@@ -1,32 +1,21 @@
 .title {
-	color: var(--joy-palette-primary-main);
-	font-size: var(--joy-fontSize-lg);
-	font-weight: var(--joy-fontWeight-lg);
+	color: #1976d2; /* Replace with your desired primary color */
+	font-size: 1.5rem;
+	font-weight: 500;
 }
 
 .headline {
-	font-weight: var(--joy-fontWeight-xl);
+	font-weight: 700;
 	font-size: clamp(1.875rem, 1.3636rem + 2.1818vw, 3rem);
 }
 
 .secondaryText {
-	color: var(--joy-palette-text-secondary);
-	font-size: var(--joy-fontSize-lg);
-	line-height: var(--joy-lineHeight-lg);
+	color: #6b6b6b; /* Secondary text color */
+	font-size: 1rem;
+	line-height: 1.5;
 }
 
 .button {
-	font-size: var(--joy-fontSize-lg);
-}
-
-.link {
-	font-weight: var(--joy-fontWeight-lg);
-}
-
-.bodyXs {
-	position: absolute;
-	top: 2rem;
-	left: 50%;
-	transform: translateX(-50%);
-	font-size: var(--joy-fontSize-xs);
+	font-size: 1.25rem;
+	text-transform: none; /* Material-UI buttons are uppercase by default */
 }
