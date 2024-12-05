@@ -1,4 +1,4 @@
-import fs from 'fs'
+import fs, { Dirent } from 'fs'
 import path from 'path'
 import * as git from 'isomorphic-git'
 import { LOCAL_GIT_REPO_PATH } from '../../common/constants'
@@ -6,6 +6,15 @@ import { getRepoName } from '../../common/utils'
 import { getGitHubPAT } from '../../store/githubStore'
 // As per the github documentation
 import http from 'isomorphic-git/http/node/index.js'
+import { dialog } from 'electron'
+import { getAppWindow } from '../../window'
+
+type DirectoryItem = {
+	name: string
+	isDirectory: boolean
+}
+
+type DirectoryContent = DirectoryItem[]
 
 export const gitCloneEventHandler = async (
 	event: unknown,
@@ -132,4 +141,33 @@ export const deleteRepoByName = async (
 		console.error('Error deleting GitRepo:', error)
 		return { success: false, error: (error as Error).message }
 	}
+}
+
+export const readLocalDirectory = (
+	event: Electron.IpcMainInvokeEvent,
+	directoryPath: string
+): DirectoryContent => {
+	const newDirPath = path.join(LOCAL_GIT_REPO_PATH, directoryPath)
+
+	const directoryContents: DirectoryContent = fs
+		.readdirSync(newDirPath, { withFileTypes: true })
+		.map((entry: Dirent) => ({
+			name: entry.name,
+			isDirectory: entry.isDirectory(),
+		}))
+
+	return directoryContents
+}
+
+export const openLocalRepo = async () => {
+	const mainWindow = getAppWindow()
+	const result = await dialog.showOpenDialog(mainWindow!, {
+		properties: ['openDirectory'],
+	})
+
+	if (result.canceled || result.filePaths.length === 0) {
+		return null
+	}
+
+	return result.filePaths[0]
 }
