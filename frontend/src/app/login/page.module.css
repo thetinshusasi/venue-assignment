@@ -1,20 +1,19 @@
 .mainContainer {
 	width: 100%;
-	min-height: 100dvh;
+	min-height: 100vh;
 	display: flex;
 	justify-content: flex-end;
 	backdrop-filter: blur(12px);
 	background-color: rgba(255, 255, 255, 0.2);
 	position: relative;
 	z-index: 1;
-	transition: width var(--Transition-duration);
-	transition-delay: calc(var(--Transition-duration) + 0.1s);
+	transition: width 0.3s;
 }
 
 .formContainer {
 	display: flex;
 	flex-direction: column;
-	min-height: 100dvh;
+	min-height: 100vh;
 	width: 100%;
 	padding: 0 16px;
 }
@@ -30,13 +29,9 @@
 	max-width: 100%;
 	margin-left: auto;
 	margin-right: auto;
-	border-radius: var(--joy-radius-sm);
-}
-
-.form {
-	display: flex;
-	flex-direction: column;
-	gap: 16px;
+	border-radius: 8px; /* Replace with Material-UI's default radius */
+	background-color: white;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .footer {
@@ -51,11 +46,10 @@
 	top: 0;
 	bottom: 0;
 	right: 0;
-	left: 0vw;
+	left: 0;
 	transition:
-		background-image var(--Transition-duration),
-		left var(--Transition-duration) !important;
-	transition-delay: calc(var(--Transition-duration) + 0.1s);
+		background-image 0.3s,
+		left 0.3s;
 	background-size: cover;
 	background-position: center;
 	background-repeat: no-repeat;

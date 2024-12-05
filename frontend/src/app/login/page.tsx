@@ -1,19 +1,19 @@
 import { NextPage } from 'next'
-import styles from './page.module.css'
 import { GitHub, Google } from '@mui/icons-material'
-import { CssVarsProvider } from '@mui/joy/styles'
-import Button from '@mui/joy/Button'
-import Link from '@mui/joy/Link'
-import Typography from '@mui/joy/Typography'
-import Stack from '@mui/joy/Stack'
-import { CssBaseline } from '@mui/joy'
+import {
+	Container,
+	Typography,
+	Button,
+	Stack,
+	CssBaseline,
+	Box,
+} from '@mui/material'
+import styles from './page.module.css'
 import LoginButton from '../../components/login/login'
 import { getServerSession } from 'next-auth'
 import { redirect } from 'next/navigation'
 
-interface Props {}
-
-const LoginPage: NextPage<Props> = async ({}) => {
+const LoginPage: NextPage = async () => {
 	const session = await getServerSession()
 
 	if (session) {
@@ -22,30 +22,30 @@ const LoginPage: NextPage<Props> = async ({}) => {
 	}
 
 	return (
-		<CssVarsProvider disableTransitionOnChange>
+		<>
 			<CssBaseline />
 			<div className={styles.mainContainer}>
 				<div className={styles.formContainer}>
-					<main className={styles.mainContent}>
-						<Stack gap={4} mb={2}>
-							<Stack gap={1}>
-								<Typography component="h1" level="h3">
+					<Container className={styles.mainContent}>
+						<Stack spacing={4}>
+							<Stack spacing={1}>
+								<Typography variant="h4" component="h1">
 									Sign in
 								</Typography>
-								<Typography>New to company?</Typography>
+								<Typography variant="body1">New to the company?</Typography>
 							</Stack>
 							<LoginButton />
 						</Stack>
-					</main>
+					</Container>
 					<footer className={styles.footer}>
-						<Typography level="body-xs">
+						<Typography variant="body2">
 							© Your company {new Date().getFullYear()}
 						</Typography>
 					</footer>
 				</div>
 			</div>
 			<div className={`${styles.background} ${styles.backgroundImageLight}`} />
-		</CssVarsProvider>
+		</>
 	)
 }
 

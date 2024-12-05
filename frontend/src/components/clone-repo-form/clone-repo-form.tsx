@@ -2,13 +2,13 @@
 
 import { useState } from 'react'
 import {
-	Button,
-	Input,
-	Typography,
-	CircularProgress,
 	Card,
+	Typography,
+	TextField,
+	Button,
 	Box,
-} from '@mui/joy'
+	CircularProgress,
+} from '@mui/material'
 import styles from './clone-repo-form.module.css'
 import { useRouter } from 'next/navigation'
 import { GIT_CLONE_EVENT } from '../../lib/models/ipc-event-constants'
@@ -76,25 +76,28 @@ const CloneRepoForm: React.FC = () => {
 
 	return (
 		<Card variant="outlined" className={styles.container}>
-			<Typography level="h4">Clone GitHub Repository</Typography>
+			<Typography variant="h4" gutterBottom>
+				Clone GitHub Repository
+			</Typography>
 			<Box className={styles.inputContainer}>
-				<Input
+				<TextField
 					placeholder="Enter GitHub repository URL"
 					value={repoUrl}
 					onChange={e => setRepoUrl(e.target.value)}
-					size="lg"
 					error={!!error}
+					helperText={error}
+					variant="outlined"
+					fullWidth
 					className={styles.inputElem}
 				/>
-				{error && <Typography className={styles.error}>{error}</Typography>}
 				<Button
 					onClick={handleCloneRepo}
 					disabled={loading}
-					variant="solid"
+					variant="contained"
 					color="primary"
-					size="lg"
+					size="large"
 				>
-					{loading ? <CircularProgress size="sm" /> : 'Clone Repo'}
+					{loading ? <CircularProgress size={24} /> : 'Clone Repo'}
 				</Button>
 			</Box>
 			{responseMessage && (

@@ -8,3 +8,14 @@
 .tableContainer {
 	padding: 20px;
 }
+
+.repoNameCell {
+	cursor: pointer;
+	color: #1976d2; /* Primary color from Material-UI theme */
+	text-decoration: underline;
+	transition: opacity 0.2s ease;
+}
+
+.repoNameCell:hover {
+	opacity: 0.8;
+}
