@@ -60,7 +60,7 @@ const CloneRepoForm: React.FC = () => {
 				if (response.success) {
 					setResponseMessage(response.message)
 					alert('Repo Cloning complete')
-					router.push('/dashboard/repo')
+					router.push('/dashboard/repository')
 				} else {
 					setError(response.message || 'Failed to clone the repository.')
 				}

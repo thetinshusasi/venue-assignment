@@ -93,3 +93,43 @@ export const gitCloneEventHandler = async (
 		}
 	}
 }
+
+export const getLocalRepoList = async (): Promise<string[]> => {
+	try {
+		const entries = await fs.promises.readdir(LOCAL_GIT_REPO_PATH, {
+			withFileTypes: true,
+		})
+
+		const gitRepos = await Promise.all(
+			entries
+				.filter(entry => entry.isDirectory()) // Ensure it's a directory
+				.map(async entry => {
+					const repoPath = path.join(LOCAL_GIT_REPO_PATH, entry.name)
+					const gitFolder = path.join(repoPath, '.git')
+					const isGitRepo = await fs.promises
+						.access(gitFolder)
+						.then(() => true)
+						.catch(() => false) // Check if .git folder exists
+					return isGitRepo ? entry.name : null
+				})
+		)
+
+		return gitRepos.filter(repo => repo !== null) as string[] // Filter out nulls
+	} catch (error) {
+		console.error('Error reading Git repos directory:', error)
+		return []
+	}
+}
+export const deleteRepoByName = async (
+	event: Electron.IpcMainInvokeEvent,
+	repoName: string
+) => {
+	const repoPath = path.join(LOCAL_GIT_REPO_PATH, repoName)
+	try {
+		await fs.promises.rm(repoPath, { recursive: true, force: true })
+		return { success: true }
+	} catch (error) {
+		console.error('Error deleting GitRepo:', error)
+		return { success: false, error: (error as Error).message }
+	}
+}

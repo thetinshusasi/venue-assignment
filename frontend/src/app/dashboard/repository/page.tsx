@@ -1,9 +1,15 @@
 import { NextPage } from 'next'
+import RepoList from '../../../components/git-repo-list/git-repo-list'
 
 interface Props {}
 
 const Page: NextPage<Props> = ({}) => {
-	return <div> repo page</div>
+	return (
+		<div>
+			{' '}
+			<RepoList />
+		</div>
+	)
 }
 
 export default Page

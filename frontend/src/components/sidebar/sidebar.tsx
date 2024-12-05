@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React from 'react'
 import Avatar from '@mui/joy/Avatar'
 import Box from '@mui/joy/Box'
 import IconButton from '@mui/joy/IconButton'
@@ -14,9 +14,16 @@ import BrightnessAutoRoundedIcon from '@mui/icons-material/BrightnessAutoRounded
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded'
 import DashboardRoundedIcon from '@mui/icons-material/DashboardRounded'
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded'
+import { useRouter } from 'next/navigation'
 import styles from './Sidebar.module.css'
 
 const Sidebar = () => {
+	const router = useRouter()
+
+	const navigateTo = (path: string) => {
+		router.push(path)
+	}
+
 	return (
 		<div className={styles.sidebar}>
 			<div className={styles.overlay} />
@@ -29,7 +36,7 @@ const Sidebar = () => {
 			<Box className={styles.navigation}>
 				<List size="sm" className={styles.list}>
 					<ListItem>
-						<ListItemButton>
+						<ListItemButton onClick={() => navigateTo('/dashboard')}>
 							<HomeRoundedIcon />
 							<ListItemContent>
 								<Typography level="title-sm">Dashboard</Typography>
@@ -38,7 +45,9 @@ const Sidebar = () => {
 					</ListItem>
 
 					<ListItem>
-						<ListItemButton>
+						<ListItemButton
+							onClick={() => navigateTo('/dashboard/repositories')}
+						>
 							<DashboardRoundedIcon />
 							<ListItemContent>
 								<Typography level="title-sm">Repositories</Typography>
