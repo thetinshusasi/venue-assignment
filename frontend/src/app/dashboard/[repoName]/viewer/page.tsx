@@ -1,6 +1,6 @@
 import { NextPage } from 'next'
 import FileViewer from '../../../../components/file-viewer/file-viewer'
-
+import styles from './page.module.css'
 interface Props {}
 
 const Page: NextPage<Props> = async ({
@@ -11,7 +11,7 @@ const Page: NextPage<Props> = async ({
 	const slug = (await params).repoName
 
 	return (
-		<div>
+		<div className={styles.container}>
 			<FileViewer repoName={slug} />
 		</div>
 	)

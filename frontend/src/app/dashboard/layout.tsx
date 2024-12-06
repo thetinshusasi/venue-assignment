@@ -10,9 +10,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
 	return (
 		<div className={styles.container}>
 			<Sidebar />
-			<Box component="main" className={styles.boxContainer}>
-				{children}
-			</Box>
+			<Box className={styles.boxContainer}>{children}</Box>
 		</div>
 	)
 }

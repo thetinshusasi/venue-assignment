@@ -17,10 +17,10 @@ const Page: NextPage<Props> = async ({}) => {
 	}
 
 	return (
-		<>
+		<div className={styles.container}>
 			<CloneRepoForm />
 			<LogOutButton />
-		</>
+		</div>
 	)
 }
 

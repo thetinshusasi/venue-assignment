@@ -171,3 +171,68 @@ export const openLocalRepo = async () => {
 
 	return result.filePaths[0]
 }
+
+export const readFileInLocalRepo = async (
+	event: Electron.IpcMainInvokeEvent,
+	filePath: string
+) => {
+	console.log('filePath', filePath)
+	const filePathInRepo = path.join(LOCAL_GIT_REPO_PATH, filePath)
+	const content = fs.readFileSync(filePathInRepo, 'utf-8')
+	return content
+}
+
+// export const writeFileInLocalRepo = async (
+// 	event,
+// 	filePath: string,
+// 	content: string
+// ) => {
+// 	await writeFile(filePath, content, 'utf-8')
+// }
+
+// export const commitAndPsuhLocalRepo = async (
+// 	event,
+// 	commitMessage: string,
+// 	filePath: string
+// ) => {
+// 	try {
+// 		const githubPAT = getGitHubPAT()
+// 		if (!githubPAT) {
+// 			return {
+// 				success: false,
+// 				message: 'GitHub PAT is not set.',
+// 			}
+// 		}
+// 		await git.add({
+// 			fs,
+// 			dir: LOCAL_GIT_REPO_PATH,
+// 			filepath: path.relative(LOCAL_GIT_REPO_PATH, filePath),
+// 		})
+// 		await git.commit({
+// 			fs,
+// 			dir: LOCAL_GIT_REPO_PATH,
+// 			message: commitMessage,
+// 			author: {
+// 				name: 'User',
+// 				email: 'user@example.com',
+// 			},
+// 			onAuth: () => ({
+// 				username: 'token', // Provide a username
+// 				password: githubPAT, // Provide the GitHub token as the password
+// 			}),
+// 		})
+// 		await git.push({
+// 			fs,
+// 			http,
+// 			dir: LOCAL_GIT_REPO_PATH,
+// 			remote: 'origin',
+// 			ref: 'main',
+// 			onAuth: () => ({
+// 				username: 'token', // Provide a username
+// 				password: githubPAT, // Provide the GitHub token as the password
+// 			}),
+// 		})
+// 	} catch (error) {
+// 		throw new Error(`Commit failed: ${error.message}`)
+// 	}
+// }

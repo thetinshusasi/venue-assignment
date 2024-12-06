@@ -1,15 +1,24 @@
 'use client'
-import { useState, useEffect } from 'react'
-import { useRouter } from 'next/router'
+import { useState, useEffect, useRef } from 'react'
 import {
 	List,
 	ListItemButton,
 	Breadcrumbs,
 	Link,
 	Typography,
+	Button,
+	Dialog,
+	DialogActions,
+	DialogContent,
+	DialogTitle,
+	TextField,
 } from '@mui/material'
-import { ipcRenderer } from 'electron'
-import { READ_LOCAL_DIRECTORY } from '../../lib/models/ipc-event-constants'
+import MonacoEditor from '@monaco-editor/react'
+import styles from './file-viewer.module.css'
+import {
+	READ_FILE_IN_LOCAL_REPO,
+	READ_LOCAL_DIRECTORY,
+} from '../../lib/models/ipc-event-constants'
 
 type DirectoryItem = {
 	name: string
@@ -23,6 +32,11 @@ type FileViewProps = {
 const FileViewer = ({ repoName }: FileViewProps) => {
 	const [directoryContent, setDirectoryContent] = useState<DirectoryItem[]>([])
 	const [breadcrumb, setBreadcrumb] = useState<string[]>([repoName as string])
+	const [selectedFile, setSelectedFile] = useState<string | null>(null)
+	const [fileContent, setFileContent] = useState<string>('')
+	const [commitDialogOpen, setCommitDialogOpen] = useState<boolean>(false)
+	const [commitMessage, setCommitMessage] = useState<string>('')
+	const monacoRef = useRef(null)
 
 	useEffect(() => {
 		if (repoName) {
@@ -35,29 +49,77 @@ const FileViewer = ({ repoName }: FileViewProps) => {
 			READ_LOCAL_DIRECTORY,
 			directoryPath
 		)
-		console.log('=========contents=======')
-		console.log(content)
 		setDirectoryContent(content)
+		setSelectedFile(null)
+		setFileContent('')
 	}
 
-	const handleBreadcrumbClick = (index: number) => {
-		const newPath = breadcrumb.slice(0, index + 1).join('/')
-		setBreadcrumb(breadcrumb.slice(0, index + 1))
-		loadDirectory(newPath)
+	const handleBreadcrumbClick = async (index: number) => {
+		const newBreadcrumb = breadcrumb.slice(0, index + 1)
+		const clickedItem = newBreadcrumb[newBreadcrumb.length - 1]
+
+		// Check if the clicked item is a file by looking at the directoryContent
+		const isFile = directoryContent.find(
+			item => item.name === clickedItem && !item.isDirectory
+		)
+
+		if (isFile) {
+			const filePath = newBreadcrumb.join('/')
+			const content = (await window.electron.ipcAPI.invoke(
+				READ_FILE_IN_LOCAL_REPO,
+				filePath
+			)) as string
+			setSelectedFile(filePath)
+			setFileContent(content)
+		} else {
+			const newPath = newBreadcrumb.join('/')
+			setBreadcrumb(newBreadcrumb)
+			loadDirectory(newPath)
+		}
 	}
 
-	const handleDoubleClick = (item: DirectoryItem) => {
+	const handleDoubleClick = async (item: DirectoryItem) => {
 		if (item.isDirectory) {
 			const newPath = `${breadcrumb.join('/')}/${item.name}`
 			setBreadcrumb([...breadcrumb, item.name])
 			loadDirectory(newPath)
 		} else {
-			console.log('File clicked:', item.name)
+			const filePath = `${breadcrumb.join('/')}/${item.name}`
+			const content = (await window.electron.ipcAPI.invoke(
+				READ_FILE_IN_LOCAL_REPO,
+				filePath
+			)) as any
+			const newPath = `${breadcrumb.join('/')}/${item.name}`
+			setBreadcrumb([...breadcrumb, item.name])
+			setSelectedFile(filePath)
+			setFileContent(content)
+		}
+	}
+
+	const handleCommitClick = () => {
+		setCommitDialogOpen(true)
+	}
+
+	const handleCommitConfirm = () => {
+		// Handle commit logic
+	}
+
+	const handleCommitCancel = () => {
+		setCommitDialogOpen(false)
+	}
+
+	const handleCancelClick = async () => {
+		if (selectedFile) {
+			await window.electron.ipcAPI
+				.invoke(READ_FILE_IN_LOCAL_REPO, selectedFile)
+				.then((content: string) => {
+					setFileContent(content)
+				})
 		}
 	}
 
 	return (
-		<div>
+		<div className={styles.container}>
 			<Breadcrumbs aria-label="breadcrumb">
 				{breadcrumb.map((crumb, index) => (
 					<Link
@@ -69,16 +131,64 @@ const FileViewer = ({ repoName }: FileViewProps) => {
 					</Link>
 				))}
 			</Breadcrumbs>
-			<List>
-				{directoryContent.map(item => (
-					<ListItemButton
-						key={item.name}
-						onDoubleClick={() => handleDoubleClick(item)}
+			{!selectedFile && (
+				<List>
+					{directoryContent.map(item => (
+						<ListItemButton
+							key={item.name}
+							onDoubleClick={() => handleDoubleClick(item)}
+						>
+							{item.name}
+						</ListItemButton>
+					))}
+				</List>
+			)}
+			{selectedFile && (
+				<div>
+					<MonacoEditor
+						height="600px"
+						defaultLanguage="javascript"
+						value={fileContent}
+						onChange={value => setFileContent(value || '')}
+					/>
+					<Button
+						variant="contained"
+						color="primary"
+						onClick={handleCommitClick}
 					>
-						{item.name}
-					</ListItemButton>
-				))}
-			</List>
+						Commit
+					</Button>
+					<Button
+						variant="contained"
+						color="secondary"
+						onClick={handleCancelClick}
+					>
+						Cancel
+					</Button>
+				</div>
+			)}
+			<Dialog open={commitDialogOpen} onClose={handleCommitCancel}>
+				<DialogTitle>Commit Changes</DialogTitle>
+				<DialogContent>
+					<TextField
+						autoFocus
+						margin="dense"
+						label="Commit Message"
+						fullWidth
+						variant="standard"
+						value={commitMessage}
+						onChange={e => setCommitMessage(e.target.value)}
+					/>
+				</DialogContent>
+				<DialogActions>
+					<Button onClick={handleCommitCancel} color="primary">
+						Cancel
+					</Button>
+					<Button onClick={handleCommitConfirm} color="primary">
+						Confirm
+					</Button>
+				</DialogActions>
+			</Dialog>
 		</div>
 	)
 }
