@@ -16,8 +16,10 @@ import {
 import MonacoEditor from '@monaco-editor/react'
 import styles from './file-viewer.module.css'
 import {
+	COMMIT_FILE_IN_LOCAL_REPO,
 	READ_FILE_IN_LOCAL_REPO,
 	READ_LOCAL_DIRECTORY,
+	WRITE_FILE_IN_LOCAL_REPO,
 } from '../../lib/models/ipc-event-constants'
 
 type DirectoryItem = {
@@ -100,8 +102,28 @@ const FileViewer = ({ repoName }: FileViewProps) => {
 		setCommitDialogOpen(true)
 	}
 
-	const handleCommitConfirm = () => {
-		// Handle commit logic
+	const handleCommitConfirm = async () => {
+		if (selectedFile && fileContent) {
+			console.log('fileContent', fileContent)
+			const contentToWrite = String(fileContent)
+
+			await window.electron.ipcAPI.invoke(WRITE_FILE_IN_LOCAL_REPO, {
+				filePath: selectedFile,
+				content: contentToWrite,
+			})
+			await window.electron.ipcAPI.invoke(COMMIT_FILE_IN_LOCAL_REPO, {
+				commitMessage,
+				filePath: selectedFile,
+				repoName,
+			})
+			setCommitDialogOpen(false)
+			setSelectedFile(null)
+
+			// Get the parent directory path by removing the filename from breadcrumb
+			const parentBreadcrumb = breadcrumb.slice(0, -1)
+			setBreadcrumb(parentBreadcrumb)
+			loadDirectory(parentBreadcrumb.join('/'))
+		}
 	}
 
 	const handleCommitCancel = () => {

@@ -13,7 +13,7 @@ export interface IpcRenderer {
 	/**
 	 * Sends a message to the main process and awaits a response.
 	 */
-	invoke<T = unknown>(channel: string, data?: unknown): Promise<T>
+	invoke<T = unknown>(channel: string, ...args: unknown[]): Promise<T>
 
 	gitClone(url: string): Promise<void>
 }

@@ -6,6 +6,8 @@ import {
 	OPEN_LOCAL_REPO,
 	READ_LOCAL_DIRECTORY,
 	READ_FILE_IN_LOCAL_REPO,
+	WRITE_FILE_IN_LOCAL_REPO,
+	COMMIT_FILE_IN_LOCAL_REPO,
 } from '../event-constants'
 import {
 	gitCloneEventHandler,
@@ -14,6 +16,8 @@ import {
 	openLocalRepo,
 	readLocalDirectory,
 	readFileInLocalRepo,
+	writeFileInLocalRepo,
+	commitAndPushLocalRepo,
 } from '../event-handlers/git-event-handlers'
 
 export const initiateIPCEventRegisteration = () => {
@@ -23,5 +27,8 @@ export const initiateIPCEventRegisteration = () => {
 	ipcMain.handle(OPEN_LOCAL_REPO, openLocalRepo)
 	ipcMain.handle(READ_LOCAL_DIRECTORY, readLocalDirectory)
 	ipcMain.handle(READ_FILE_IN_LOCAL_REPO, readFileInLocalRepo)
+	ipcMain.handle(WRITE_FILE_IN_LOCAL_REPO, writeFileInLocalRepo)
+	ipcMain.handle(COMMIT_FILE_IN_LOCAL_REPO, commitAndPushLocalRepo)
+
 	console.log('IPC event registered')
 }

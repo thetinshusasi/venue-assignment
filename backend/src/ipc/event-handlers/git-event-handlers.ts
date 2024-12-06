@@ -8,6 +8,7 @@ import { getGitHubPAT } from '../../store/githubStore'
 import http from 'isomorphic-git/http/node/index.js'
 import { dialog } from 'electron'
 import { getAppWindow } from '../../window'
+import { writeFile } from 'fs/promises'
 
 type DirectoryItem = {
 	name: string
@@ -182,57 +183,148 @@ export const readFileInLocalRepo = async (
 	return content
 }
 
-// export const writeFileInLocalRepo = async (
-// 	event,
-// 	filePath: string,
-// 	content: string
-// ) => {
-// 	await writeFile(filePath, content, 'utf-8')
-// }
+interface FileWriteData {
+	filePath: string
+	content: string
+}
 
-// export const commitAndPsuhLocalRepo = async (
-// 	event,
-// 	commitMessage: string,
-// 	filePath: string
-// ) => {
-// 	try {
-// 		const githubPAT = getGitHubPAT()
-// 		if (!githubPAT) {
-// 			return {
-// 				success: false,
-// 				message: 'GitHub PAT is not set.',
-// 			}
-// 		}
-// 		await git.add({
-// 			fs,
-// 			dir: LOCAL_GIT_REPO_PATH,
-// 			filepath: path.relative(LOCAL_GIT_REPO_PATH, filePath),
-// 		})
-// 		await git.commit({
-// 			fs,
-// 			dir: LOCAL_GIT_REPO_PATH,
-// 			message: commitMessage,
-// 			author: {
-// 				name: 'User',
-// 				email: 'user@example.com',
-// 			},
-// 			onAuth: () => ({
-// 				username: 'token', // Provide a username
-// 				password: githubPAT, // Provide the GitHub token as the password
-// 			}),
-// 		})
-// 		await git.push({
-// 			fs,
-// 			http,
-// 			dir: LOCAL_GIT_REPO_PATH,
-// 			remote: 'origin',
-// 			ref: 'main',
-// 			onAuth: () => ({
-// 				username: 'token', // Provide a username
-// 				password: githubPAT, // Provide the GitHub token as the password
-// 			}),
-// 		})
-// 	} catch (error) {
-// 		throw new Error(`Commit failed: ${error.message}`)
-// 	}
-// }
+export const writeFileInLocalRepo = async (
+	event: Electron.IpcMainInvokeEvent,
+	data: FileWriteData
+) => {
+	const { filePath, content } = data
+	const filePathInRepo = path.join(LOCAL_GIT_REPO_PATH, filePath)
+	await writeFile(filePathInRepo, content, 'utf-8')
+}
+
+export const commitAndPushLocalRepo = async (
+	event: Electron.IpcMainInvokeEvent,
+	data: { commitMessage: string; filePath: string; repoName: string }
+) => {
+	try {
+		const githubPAT = getGitHubPAT()
+		if (!githubPAT) {
+			return {
+				success: false,
+				message: 'GitHub PAT is not set.',
+			}
+		}
+
+		const { commitMessage, filePath, repoName } = data
+
+		const relativeFilePath = path.relative(
+			LOCAL_GIT_REPO_PATH,
+			path.join(LOCAL_GIT_REPO_PATH, filePath)
+		)
+
+		console.log('relativeFilePath', relativeFilePath)
+		console.log('filePath', filePath)
+
+		console.log('repoName', repoName)
+		const repoFolder = path.join(LOCAL_GIT_REPO_PATH, repoName)
+
+		// Initialize repository if not already initialized
+		console.log('listFiles start')
+
+		const isRepoInitialized = await git.listFiles({
+			fs,
+			dir: repoFolder,
+		})
+		console.log('isRepoInitialized', isRepoInitialized)
+		console.log('listFiles end')
+
+		if (isRepoInitialized.length === 0) {
+			console.log('init start')
+
+			await git.init({
+				fs,
+				dir: repoFolder,
+			})
+			console.log('init end')
+			console.log('commit start')
+
+			await git.commit({
+				fs,
+				dir: repoFolder,
+				message: 'Initial commit',
+				committer: {
+					name: 'User',
+					email: 'user@example.com',
+				},
+			})
+			console.log('commit end')
+		}
+		console.log('currentBranch start')
+
+		// Check current branch and create if needed
+		const currentBranch = await git.currentBranch({
+			fs,
+			dir: repoFolder,
+			fullname: false,
+		})
+
+		console.log('currentBranch end')
+
+		if (!currentBranch) {
+			console.log('branch start')
+
+			await git.branch({
+				fs,
+				dir: repoFolder,
+				ref: 'main',
+			})
+			console.log('branch end')
+		}
+
+		console.log('add start')
+		const filePathInsidwWorkingDir = relativeFilePath.replace(
+			`${repoName}/`,
+			''
+		)
+
+		await git.add({
+			fs,
+			dir: repoFolder,
+			filepath: filePathInsidwWorkingDir,
+			force: true,
+		})
+		console.log('add end')
+
+		console.log('commit start')
+		await git.commit({
+			fs,
+			dir: repoFolder,
+			message: commitMessage,
+			author: {
+				name: 'User',
+				email: 'user@example.com',
+			},
+			committer: {
+				name: 'User',
+				email: 'user@example.com',
+			},
+		})
+		console.log('commit end')
+
+		console.log('push start')
+		await git.push({
+			fs,
+			http,
+			dir: repoFolder,
+			remote: 'origin',
+			ref: 'main',
+			onAuth: () => ({
+				username: 'token',
+				password: githubPAT,
+			}),
+		})
+		console.log('push end')
+
+		return {
+			success: true,
+			message: 'Changes committed and pushed successfully',
+		}
+	} catch (error) {
+		throw new Error(`Commit failed: ${error}`)
+	}
+}
