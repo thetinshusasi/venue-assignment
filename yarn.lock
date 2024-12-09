@@ -2618,19 +2618,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@mui/icons-material@npm:^6.1.9":
-  version: 6.1.9
-  resolution: "@mui/icons-material@npm:6.1.9"
+"@mui/icons-material@npm:^6.1.10":
+  version: 6.1.10
+  resolution: "@mui/icons-material@npm:6.1.10"
   dependencies:
     "@babel/runtime": "npm:^7.26.0"
   peerDependencies:
-    "@mui/material": ^6.1.9
+    "@mui/material": ^6.1.10
     "@types/react": ^17.0.0 || ^18.0.0 || ^19.0.0
     react: ^17.0.0 || ^18.0.0 || ^19.0.0
   peerDependenciesMeta:
     "@types/react":
       optional: true
-  checksum: 10c0/7efc0c4a4c668118252ec0a0bf7ed8e4d9af68d03d92e76d382109aaf8b018bd3512b47c444947c12df25be02615483a5e4889ddf745b42ab0446583b34d59f8
+  checksum: 10c0/970a402962b27219bdff4b7af32e758fea800c6879112887cdc71f0d6869c3ea66e24e320edbc39b704f174511a918a055b96d49b91bdeefb1afe8d753b42d4e
   languageName: node
   linkType: hard
 
@@ -12941,7 +12941,7 @@ __metadata:
     "@fontsource/inter": "npm:^5.1.0"
     "@fontsource/roboto": "npm:^5.1.0"
     "@monaco-editor/react": "npm:^4.6.0"
-    "@mui/icons-material": "npm:^6.1.9"
+    "@mui/icons-material": "npm:^6.1.10"
     "@mui/joy": "npm:5.0.0-beta.48"
     "@mui/material": "npm:^6.1.9"
     "@mui/material-nextjs": "npm:^6.1.9"
